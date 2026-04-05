@@ -5,7 +5,7 @@ const { Client, GatewayIntentBits } = require("discord.js");
 
 const app = express();
 
-// 🌐 Servidor web (necessário pro Render não derrubar)
+// 🌐 Servidor web (Render precisa disso)
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
@@ -16,7 +16,8 @@ app.get("/ping", (req, res) => {
   res.send("pong");
 });
 
-app.listen(PORT, () => {
+// ⚠️ MUITO IMPORTANTE pro Render
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`🌐 Servidor rodando na porta ${PORT}`);
 });
 
@@ -38,12 +39,12 @@ client.on("error", (err) => {
   console.error("❌ ERRO DO CLIENT:", err);
 });
 
-// 🤖 Quando o bot conecta
+// 🤖 Bot pronto
 client.once("ready", () => {
   console.log(`✅ Bot logado como ${client.user.tag}`);
 });
 
-// 🚀 LOGIN COM DEBUG FORTE
+// 🚀 LOGIN
 (async () => {
   try {
     console.log("🔍 Verificando ambiente...");
