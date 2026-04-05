@@ -1,29 +1,27 @@
 require("dotenv").config();
 
-const express = require("express");
-const app = express();
+const { Client, GatewayIntentBits } = require("discord.js");
 
-// 🔍 DEBUG TOTAL
-console.log("===== DEBUG ENV =====");
-console.log("process.env:", process.env);
-console.log("TOKEN:", process.env.TOKEN);
-console.log("TOKEN existe?", !!process.env.TOKEN);
-console.log("=====================");
-
-// 🌐 servidor web
-const PORT = process.env.PORT || 3000;
-
-app.get("/", (req, res) => {
-  res.send("Servidor online 🚀");
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
 });
 
-app.get("/env", (req, res) => {
-  res.json({
-    hasToken: !!process.env.TOKEN,
-    tokenLength: process.env.TOKEN ? process.env.TOKEN.length : 0
-  });
+client.once("ready", () => {
+  console.log(`✅ Logado como ${client.user.tag}`);
 });
 
-app.listen(PORT, () => {
-  console.log(`🌐 Rodando na porta ${PORT}`);
-});
+(async () => {
+  try {
+    console.log("🔑 TOKEN existe?", !!process.env.TOKEN);
+    console.log("🔄 Tentando logar...");
+    
+    await client.login(process.env.TOKEN);
+
+  } catch (err) {
+    console.error("❌ ERRO:", err);
+  }
+})();
